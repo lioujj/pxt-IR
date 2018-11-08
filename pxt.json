@@ -1,0 +1,15 @@
+{
+    "name": "IR",
+    "version": "0.0.1",
+    "description": "這是專為micro:bit提供的紅外線積木(This is the infrared blocks for microbit)",
+    "license": "MIT",
+    "dependencies": {
+        "core": "*"
+    },
+    "files": [
+        "README.md",
+        "main.ts",
+        "_locales/zh/IR-strings.json"
+    ],
+    "public": true
+}
