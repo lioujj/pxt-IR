@@ -12,7 +12,8 @@ Liou Zheng-Ji\
 [![click here to see the sample video](https://img.youtube.com/vi/4JWbFmI6djI/0.jpg)](https://www.youtube.com/watch?v=4JWbFmI6djI)
 
 ## Sample1
-The code of how to receive IR message
+The code of how to receive IR message.\
+For now, the blocks can send and receive IR message using the encoding of NEC type. You can emit IR to your IR receiver attached on microbit from normal the IR remote control, then the blocks will decode the IR message to Hex. You can record the IR message then send the same IR message when you want to emit the same IR message by microbit.
 ![image](images/rec_sample1_en.jpg)
 
 ## Sample2
