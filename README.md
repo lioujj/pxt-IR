@@ -22,6 +22,12 @@ For now, the blocks can send and receive IR message using the encoding of NEC ty
 ![image](images/rec_sample1_en.jpg)
 
 ## Sample2
+[![click here to see the sample video](https://img.youtube.com/vi/WI193AyCgbA/0.jpg)](https://www.youtube.com/watch?v=WI193AyCgbA)\
+\
+I use the TV remote controller to control the micro:bit.
+![image](images/sample3_en.jpg)
+
+## Sample3
 The code of how to send IR message
 ![image](images/rec_sample2_en.jpg)
 
