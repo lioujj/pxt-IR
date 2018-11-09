@@ -17,6 +17,7 @@ namespace IR {
     let rec_Type = ""
     let messageStr = ""
     let recPin = DigitalPin.P8
+    let thereIsHandler=false
     arr = []
 
     function transmitBit(highTime: number, lowTime: number): void {
@@ -196,7 +197,9 @@ namespace IR {
             command = pulseToDigit(16, 31, 1600)
             messageStr = convertNumToHexStr(addr, 4) + convertNumToHexStr(command, 4)
             arr = [];
-            tempHandler();
+            if (thereIsHandler){
+                tempHandler();
+            }
         }
         resetReceiver();
     }
@@ -241,6 +244,7 @@ namespace IR {
     //% weight=70 blockGap=10
     export function onReceivedIR(handler: Action): void {
         tempHandler = handler
+        thereIsHandler=true
     }
 
     /**
@@ -260,4 +264,5 @@ namespace IR {
     export function getMessage(): string {
         return messageStr
     }
-}
+
+} 
