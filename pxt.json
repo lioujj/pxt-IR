@@ -1,6 +1,6 @@
 {
     "name": "IR",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "這是專為micro:bit提供的紅外線積木(This is the infrared blocks for microbit)",
     "license": "MIT",
     "dependencies": {
