@@ -1,6 +1,5 @@
 {
     "IR|block": "Infrarot IR",
-    "IR.encodingType.NEC|block": "NEC",
     "IR.setIR_pin|block": "Infrarot Empfänger an Pin: %myPin",
     "IR.setREC_pin|block": "Infrarot Sender an Pin: %myPin",
     "IR.sendMyMessage1|block": "Sende IR-Code: %msg| ,: %times| mal, Codierung:%myType",
