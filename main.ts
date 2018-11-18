@@ -2,7 +2,9 @@
 namespace IR {
     export enum encodingType {
         //% block="NEC"
-        NEC
+        NEC,
+        //% block="SONY"
+        SONY
     }
     let tempHandler: Action;
     let irLed = AnalogPin.P16;
@@ -17,7 +19,7 @@ namespace IR {
     let rec_Type = ""
     let messageStr = ""
     let recPin = DigitalPin.P8
-    let thereIsHandler=false
+    let thereIsHandler = false
     arr = []
 
     function transmitBit(highTime: number, lowTime: number): void {
@@ -111,7 +113,6 @@ namespace IR {
             falseLow = 560,
             interval = 110000
         }
-        //let address = Math.idiv(message, 0x010000)
         let address = message >> 16;
         let command = message % 0x010000;
         const MESSAGE_BITS = 16;
@@ -129,9 +130,33 @@ namespace IR {
         }
     }
 
+    function sendSONY(message: number, times: number): void {
+        const enum SONY {
+            startHigh = 2300,
+            startLow = 500,
+            trueHigh = 1100,
+            trueLow = 500,
+            falseHigh = 500,
+            falseLow = 500,
+            interval = 45000
+        }
+        const MESSAGE_BITS = 12;
+        let startTime = 0;
+        let betweenTime = 0;
+        for (let sendCount = 0; sendCount < times; sendCount++) {
+            startTime = input.runningTimeMicros();
+            transmitBit(SONY.startHigh, SONY.startLow);
+            encode(message, 12, SONY.trueHigh, SONY.trueLow, SONY.falseHigh, SONY.falseLow);
+            betweenTime = input.runningTimeMicros() - startTime
+            if (times > 0)
+                control.waitMicros(SONY.interval - betweenTime);
+        }
+    }
+
     export function sendMessage(message: number, times: number, myType: encodingType): void {
         switch (myType) {
             case encodingType.NEC: sendNEC(message, times);
+            case encodingType.SONY: sendSONY(message, times);
             default: sendNEC(message, times);
         }
     }
@@ -163,7 +188,7 @@ namespace IR {
     control.inBackground(function () {
         basic.forever(function () {
             if ((!received) && (rec_init)) {
-                if (arr.length > 30) {
+                if (arr.length > 20) {
                     if ((input.runningTimeMicros() - arr[arr.length - 1]) > 120000) {
                         if (first) {
                             resetReceiver()
@@ -171,9 +196,6 @@ namespace IR {
                         } else {
                             received = true
                             decodeIR();
-                            //tempHandler();
-                            //control.raiseEvent(recPin, DAL.MICROBIT_PIN_EVENT_ON_TOUCH);
-                            //resetReceiver()
                         }
                     }
                 }
@@ -189,7 +211,7 @@ namespace IR {
         for (let i = 0; i <= arr.length - 1 - 1; i++) {
             arr[i] = arr[i + 1] - arr[i]
         }
-        if ((arr[0] > 9000 && arr[0] < 10000) && (arr[1] > 4000 && arr[1] < 5000)) {
+        if (((arr[0] + arr[1]) > 13000) && ((arr[0] + arr[1]) < 14000)) {
             rec_Type = "NEC"
             arr.removeAt(1)
             arr.removeAt(0)
@@ -197,7 +219,17 @@ namespace IR {
             command = pulseToDigit(16, 31, 1600)
             messageStr = convertNumToHexStr(addr, 4) + convertNumToHexStr(command, 4)
             arr = [];
-            if (thereIsHandler){
+            if (thereIsHandler) {
+                tempHandler();
+            }
+        } else if (((arr[0] + arr[1]) > 2600) && ((arr[0] + arr[1]) < 3200)) {
+            rec_Type = "SONY"
+            arr.removeAt(1)
+            arr.removeAt(0)
+            command = pulseToDigit(0, 11, 1300)
+            messageStr = convertNumToHexStr(command, 3)
+            arr = [];
+            if (thereIsHandler) {
                 tempHandler();
             }
         }
@@ -244,7 +276,7 @@ namespace IR {
     //% weight=70 blockGap=10
     export function onReceivedIR(handler: Action): void {
         tempHandler = handler
-        thereIsHandler=true
+        thereIsHandler = true
     }
 
     /**
@@ -265,4 +297,4 @@ namespace IR {
         return messageStr
     }
 
-} 
+}
