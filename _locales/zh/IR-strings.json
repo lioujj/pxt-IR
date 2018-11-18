@@ -1,6 +1,5 @@
 {
     "IR|block": "紅外線",
-    "IR.encodingType.NEC|block": "NEC",
     "IR.setIR_pin|block": "設定紅外線發射腳位: %myPin",
     "IR.setREC_pin|block": "設定紅外線接收腳位: %myPin",
     "IR.sendMyMessage1|block": "發射紅外線訊息: %msg| ,發射次數： %times| 次, 訊息編碼:%myType",
