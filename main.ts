@@ -85,6 +85,8 @@ namespace IR {
         if (send_init) {
             if (myType == "NEC") {
                 sendMessage(convertHexStrToNum(msg), times, encodingType.NEC);
+            } else if (myType == "SONY") {
+                sendMessage(convertHexStrToNum(msg), times, encodingType.SONY);
             }
         }
     }
